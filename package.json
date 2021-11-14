@@ -1,0 +1,49 @@
+{
+  "name": "loglog",
+  "private": true,
+  "version": "0.1.0",
+  "license": "MIT",
+  "scripts": {
+    "start": "yarn && accurapp-scripts start",
+    "build": "accurapp-scripts build",
+    "test": "accurapp-scripts test",
+    "lint": "accurapp-scripts lint",
+    "prettier": "accurapp-scripts prettier"
+  },
+  "browserslist": {
+    "production": [
+      ">0.25%",
+      "not ie 11",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 Chrome version",
+      "last 1 Firefox version",
+      "last 1 Safari version"
+    ]
+  },
+  "devDependencies": {
+    "@types/jest": "^27.0.2",
+    "@types/node": "^16.11.7",
+    "@types/webpack-env": "^1.16.3",
+    "accurapp-scripts": "^5.2.1",
+    "babel-preset-accurapp": "^5.1.0",
+    "eslint-config-accurapp": "^5.1.0",
+    "jest-config-accurapp": "^4.1.2",
+    "typescript": "^4.4.4",
+    "webpack-preset-accurapp": "^5.2.1"
+  },
+  "dependencies": {
+    "@types/lodash-es": "^4.17.5",
+    "@types/react": "^17.0.34",
+    "@types/react-dom": "^17.0.11",
+    "dayjs": "^1.10.7",
+    "lodash-es": "^4.17.21",
+    "mobx": "^6.3.7",
+    "mobx-react-lite": "^3.2.2",
+    "modern-normalize": "^1.1.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "tachyons": "^4.12.0"
+  }
+}
