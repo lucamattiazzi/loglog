@@ -24,7 +24,7 @@ export function getBars(ts: number): Bar[] {
 
 function _Day(p: DayProps) {
   const bars = getBars(p.start)
-  const events = state.data?.events.filter(e => 
+  const events = state.events.filter(e => 
     e.type === 'food' ? e.ts > p.start && e.ts < p.end : e.start > p.start && e.end < p.end
   ) || []
 
@@ -32,8 +32,8 @@ function _Day(p: DayProps) {
   const sleepEvents = events.filter(e => e.type === 'sleep')
 
   return (
-    <div style={p.style} className="overflow-y-auto no-scrollbars relative">
-      { bars.map((b, idx) => <DayBar bar={b} key={idx} />) }
+    <div style={p.style} className="overflow-y-auto no-scrollbars relative shadow-6 pv2">
+      { bars.map((b, idx) => <DayBar bar={b} key={idx} backgroundColor={p.style.backgroundColor as string} />) }
       { sleepEvents.map((e, idx) => <DayEvent event={e} key={idx} />) }
       { foodEvents.map((e, idx) => <DayEvent event={e} key={idx} />) }
     </div>

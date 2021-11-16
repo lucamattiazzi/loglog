@@ -8,9 +8,6 @@ interface DayEventProps {
   event: BabyEvent
 }
 
-function getBiberonSize(amount: number) {
-}
-
 function FoodEventComponent(p: { e: FoodEvent }) {
   const min = 10
   const max = 36
@@ -22,12 +19,12 @@ function FoodEventComponent(p: { e: FoodEvent }) {
 function SleepEventComponent(p: { e: SleepEvent }) {
   const hours = (p.e.end - p.e.start) / (1000 * 60 * 60)
   const height = `${hours * BAR_HEIGHT}px`
-  const backgroundColor = 'rgba(30, 4, 112, 0.8)'
+  const backgroundColor = 'rgba(30, 4, 112, 0.4)'
   return <div className="w-100" style={{ height, backgroundColor }} />
 }
 
 function getEventStyle(event: BabyEvent) {
-  const centerTs = event.type === 'food' ? event.ts : event.start + (event.end + event.start) / 2
+  const centerTs = event.type === 'food' ? event.ts : event.start + (event.end - event.start) / 2
   const center = dayjs(centerTs)
   const dayStart = center.startOf('day')
   const deltaMinutes = center.diff(dayStart, 'minutes')
@@ -41,7 +38,7 @@ function getEventStyle(event: BabyEvent) {
 
 export function DayEvent(p: DayEventProps) {
   const editEvent = (evt: BabyEvent) => () => {
-    state.createNewEvent(evt)
+    state.editEvent(evt)
   }
 
   return (

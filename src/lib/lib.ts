@@ -1,21 +1,15 @@
-import { BabyEvent, Data } from '../types'
+import { Data } from '../types'
 import dayjs from 'dayjs'
 
-function getExistingData() {
+export async function fetchData(): Promise<Data> {
   const existingData = localStorage.getItem('data')
   if (!existingData) return { name: 'Elisa', events: [] } as Data
   const parsed = JSON.parse(existingData) as Data
   return parsed
 }
 
-export async function fetchData(): Promise<Data> {
-  return getExistingData()
-}
-
-export async function saveEvent(event: BabyEvent): Promise<boolean> {
-  const existingData = getExistingData()
-  existingData.events.push(event)
-  localStorage.setItem('data', JSON.stringify(existingData))
+export async function saveData(data: Data): Promise<boolean> {
+  localStorage.setItem('data', JSON.stringify(data))
   return true
 }
 

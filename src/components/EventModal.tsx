@@ -1,110 +1,57 @@
-import dayjs from 'dayjs'
-import React, { useEffect } from 'react'
+import { observer } from 'mobx-react-lite'
+import React from 'react'
 import { state } from '../state'
-import { BabyEvent, FoodEvent, NewEvent, SleepEvent } from '../types'
+import { FoodForm } from './FoodForm'
+import { SleepForm } from './SleepForm'
 
-interface FormProps<T> {
-  additionalData: T
-  setAdditionalData: (data: NewEvent, force?: boolean) => void
-}
+function _EventModal() {
+  const { currentEvent: { type }, isNewEvent } = state
 
-function FoodForm(p: FormProps<Partial<FoodEvent>>) {
-  const { ts = dayjs().unix() * 1000, amount = 100 } = p.additionalData
-
-  function onTimeChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const [hours, minutes] = e.target.value.split(':')
-    const ts = dayjs().set('hour', Number(hours)).set('minutes', Number(minutes)).unix() * 1000
-    p.setAdditionalData({ ts })
+  function setType(type: 'food' | 'sleep') {
+    state.updateCurrentEvent({ type })
   }
 
-  function onAmountChange(e: React.ChangeEvent<HTMLInputElement>) {
-    p.setAdditionalData({ amount: Number(e.target.value) })
+  function onClickSave() {
+    state.saveEvent()
   }
 
-  const timeValue = `${String(dayjs(ts).hour()).padStart(2, '0')}:${String(dayjs(ts).minute()).padStart(2, '0')}`
+  function onClickDelete() {
+    state.deleteEvent()
+  }
 
-  useEffect(() => {
-    p.setAdditionalData({ ts, amount }, true)
-  }, [])
+  const FormComponent = type === 'food' ? FoodForm : SleepForm
+  const title = isNewEvent ? 'Crea nuovo evento' : 'Modifica evento'
 
   return (
-    <>
-      <input type="time" onChange={onTimeChange} step={60 * 15} value={timeValue} />
-      <input type="number" onChange={onAmountChange} value={amount}/>
-    </>
-  )
-}
-
-function SleepForm(p: FormProps<Partial<SleepEvent>>) {
-  const { start = dayjs().unix() * 1000, end = dayjs().unix() * 1000 + 1000 * 60 * 30 } = p.additionalData
-
-  function onStartChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const [hours, minutes] = e.target.value.split(':')
-    const start = dayjs().set('hour', Number(hours)).set('minutes', Number(minutes)).unix() * 1000
-    p.setAdditionalData({ start })
-  }
-
-  function onEndChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const [hours, minutes] = e.target.value.split(':')
-    const end = dayjs().set('hour', Number(hours)).set('minutes', Number(minutes)).unix() * 1000
-    p.setAdditionalData({ end })
-  }
-
-  const startValue = `${String(dayjs(start).hour()).padStart(2, '0')}:${String(dayjs(start).minute()).padStart(2, '0')}`
-  const endValue = `${String(dayjs(end).hour()).padStart(2, '0')}:${String(dayjs(end).minute()).padStart(2, '0')}`
-
-  useEffect(() => {
-    p.setAdditionalData({ start, end }, true)
-  }, [])
-
-  return (
-    <>
-      <input type="time" onChange={onStartChange} step={60 * 15} value={startValue} />
-      <input type="time" onChange={onEndChange} step={60 * 15} value={endValue} />
-    </>
-  )
-}
-
-export function EventModal() {
-  const [type, setType] = React.useState<'food' | 'sleep'>('food')
-  const [additionalData, _setAdditionalData] = React.useState<NewEvent>({})
-  console.log('additionalData', additionalData)
-
-  function onSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault()
-  }
-
-  function onSelectChange(e: React.ChangeEvent<HTMLSelectElement>) {
-    setType(e.target.value as 'food' | 'sleep')
-  }
-
-  function onClickSave(e: React.MouseEvent<HTMLDivElement>) {
-    state.saveEvent({ type, ...additionalData } as BabyEvent)
-  }
-
-  function setAdditionalData(data: NewEvent, force: boolean = false) {
-    force
-      ? _setAdditionalData(data)
-      : _setAdditionalData({ ...additionalData, ...data })
-  }
-
-  return (
-    <div className="absolute w-100 h-100 bg-white-80 flex justify-center items-center">
-      <form className="flex flex-column" onSubmit={onSubmit}>
-        <div className="f3 mb2">Tipo di evento:</div>
-        <select className="mb2" value={type} onChange={onSelectChange}>
-          <option value="food">Cibo</option>
-          <option value="sleep">Sonno</option>
-        </select>
-        <div className="mb2">
-          {
-            type === 'food'
-              ? <FoodForm setAdditionalData={setAdditionalData} additionalData={additionalData as Partial<FoodEvent>} />
-              : <SleepForm setAdditionalData={setAdditionalData} additionalData={additionalData as Partial<SleepEvent>} />
-          }
+    <div className="absolute w-100 h-100 bg-white-60 flex flex-row justify-center items-center">
+      <div className="flex flex-column bg-white-60 w-100 pv4 ph2">
+        <div className="f3 mb2 tc pb3 b">{title}</div>
+        <div className="w-100 flex flex-row justify-around items-center">
+          <div
+            className="f1 pv3 ph4 tc bg-light-blue b br4"
+            onClick={() => setType('food')}
+            style={{ opacity: type === 'sleep' ? 0.3 : 1 }}
+          >
+            🍼
+          </div>
+          <div
+            className="f1 pv3 ph4 tc bg-light-blue b br4"
+            onClick={() => setType('sleep')}
+            style={{ opacity: type === 'food' ? 0.3 : 1 }}
+          >
+            💤
+          </div>
         </div>
-        <div className="pointer pv2 ph3 ba b--black tc bg-white" onClick={onClickSave}>SAVE</div>
-      </form>
+        <div className="mv4 w-100 tc">
+          <FormComponent />
+        </div>
+        <div className="w-100 flex flex-row justify-around items-center">
+          <div className="f3 pv3 ph4 tc bg-green b br4" onClick={onClickSave}>💾</div>
+          <div className="f3 pv3 ph4 tc bg-orange b br4" onClick={onClickDelete}>🗑️</div>
+        </div>
+      </div>
     </div>
   )
 }
+
+export const EventModal = observer(_EventModal)

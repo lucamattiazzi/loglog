@@ -8,3 +8,23 @@ body,
 .no-scrollbars::-webkit-scrollbar {
   display: none;
 }
+
+.shadow-6 {
+  box-shadow: inset -4px 0px 10px 4px rgb(0 0 0 / 20%);
+}
+
+.hour:before,
+.hour:after {
+  content: '';
+  flex: 1 1;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  margin: auto;
+}
+
+.hour:before {
+  margin-right: 10px;
+}
+
+.hour:after {
+  margin-left: 10px;
+}
