@@ -1,10 +1,11 @@
 # Loglog
 
-This project was bootstrapped with [Accurapp](https://github.com/accurat/accurapp).
+Name of this project is still temporary, it's due to the fact that is a log that shows past days with a logarithmic width.
 
-## Usage
-Once you installed the dependencies running `yarn`, these are the available commands:
-- `yarn start` starts a server locally
-- `yarn build` builds the project for production, ready to be deployed from the `build/` folder
+It's a logger to keep track of food and sleep schedules of my daughter, all wrapped in a small webapp.
 
-[Read the rest of the documentation here.](https://github.com/accurat/accurapp)
+Other than that, you can choose your own icon if you decide to install it as a PWA on your smartphone/computer.
+
+That's it. I'll probably add screenshots in the future.
+
+(also, will allow users to sync data using I guess some google service, and export/import the schedule as json)
