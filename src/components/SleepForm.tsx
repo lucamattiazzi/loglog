@@ -10,14 +10,12 @@ function _SleepForm() {
   const end = currentEvent.end || start + 1000 + 1000 * 60 * 30
 
   function onStartChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const [hours, minutes] = e.target.value.split(':')
-    const start = dayjs().set('hour', Number(hours)).set('minutes', Number(minutes)).unix() * 1000
+    const start = dayjs(e.target.value).unix() * 1000
     state.updateCurrentEvent({ start })
   }
 
   function onEndChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const [hours, minutes] = e.target.value.split(':')
-    const end = dayjs().set('hour', Number(hours)).set('minutes', Number(minutes)).unix() * 1000
+    const end = dayjs(e.target.value).unix() * 1000
     state.updateCurrentEvent({ end })
   }
 

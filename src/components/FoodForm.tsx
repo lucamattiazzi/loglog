@@ -10,8 +10,7 @@ function _FoodForm() {
   const amount = currentEvent.amount || 100
 
   function onTimeChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const [hours, minutes] = e.target.value.split(':')
-    const ts = dayjs().set('hour', Number(hours)).set('minutes', Number(minutes)).unix() * 1000
+    const ts = dayjs(e.target.value).unix() * 1000
     state.updateCurrentEvent({ ts })
   }
 

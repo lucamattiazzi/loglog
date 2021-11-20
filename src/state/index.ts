@@ -101,6 +101,7 @@ class State {
   }
 
   public updateCurrentEvent = (eventUpdate: Partial<BabyEvent>) => {
+    console.log('eventUpdate', eventUpdate)
     merge(this.currentEvent, eventUpdate)
     saveData(this.data)
   }
