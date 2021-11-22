@@ -1,6 +1,7 @@
 import { observer } from 'mobx-react-lite'
 import React, { useEffect } from 'react'
 import { sortBy } from 'lodash'
+import { saveAs } from 'file-saver'
 import { Area } from 'react-easy-crop/types'
 import { CropUplodedImage } from './CropUploadedImage'
 import { state } from '../state'
@@ -38,6 +39,12 @@ function _InfoView() {
     window.location.reload()
   }
 
+  function handleExportClick() {
+    const json = JSON.stringify(state.data, null, 2)
+    const blob = new Blob([json], {type: "text/json;charset=utf-8"});
+    saveAs(blob, `data_export-${new Date().toISOString()}.json`)
+  }
+
   useEffect(() => {
     fetch('/manifest.webmanifest').then(r => r.json()).then(manifest => {
       const { icons } = manifest
@@ -72,7 +79,7 @@ function _InfoView() {
         </div>
       }
       {  
-        uploadedImageSrc && 
+        state.installPromptEvent && uploadedImageSrc && 
           <div className="absolute w-100 h-100 bg-white-80 flex flex-column items-center justify-center">
             <div className="relative overflow-hidden mb4" style={{ width: '300px', height: '300px' }}>
               <CropUplodedImage dataUrl={uploadedImageSrc} onCropComplete={onCropComplete}/>
@@ -80,6 +87,9 @@ function _InfoView() {
             <div className="f2 pv3 ph4 tc bg-light-blue br4 mb3" onClick={onSaveIconClick}>Salva Icona</div>
           </div>
       }
+      <div className="flex flex-column">
+        <div onClick={handleExportClick}>Esporta dati</div>
+      </div>
     </div>
   )
 }
