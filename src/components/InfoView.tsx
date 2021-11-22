@@ -60,14 +60,17 @@ function _InfoView() {
         </a>
       </div>
       <hr className="w-80 mv4" />
-      <div className="flex flex-column items-center pv3">
-        <div className="f3 b pb3" onClick={promptForInstallation}>Installa applicazione</div>
-        <div className="pa2 bg-orange mb3 br3 relative" style={{ width: '128px', height: '128px' }}>
-          {imageSrc && <img src={imageSrc} className="br-pill" onClick={promptForInstallation} />}
+      {
+        state.installPromptEvent && 
+        <div className="flex flex-column items-center pv3">
+          <div className="f3 b pb3" onClick={promptForInstallation}>Installa applicazione</div>
+          <div className="pa2 bg-orange mb3 br3 relative" style={{ width: '128px', height: '128px' }}>
+            {imageSrc && <img src={imageSrc} className="br-pill" onClick={promptForInstallation} />}
+          </div>
+          <div className="f4 pv2 ph3 tc bg-light-blue br4 mb3" onClick={onChangeIconClick}>Cambia Icona</div>
+          <div className="f4 pv2 ph3 tc bg-light-blue br4" onClick={onResetIconClick}>Torna a default</div>
         </div>
-        <div className="f4 pv2 ph3 tc bg-light-blue br4 mb3" onClick={onChangeIconClick}>Cambia Icona</div>
-        <div className="f4 pv2 ph3 tc bg-light-blue br4" onClick={onResetIconClick}>Torna a default</div>
-      </div>
+      }
       {  
         uploadedImageSrc && 
           <div className="absolute w-100 h-100 bg-white-80 flex flex-column items-center justify-center">

@@ -115,6 +115,7 @@ class State {
     try {
       this.installPromptEvent.prompt()
     } catch (err) {
+      console.log('err', err)
       window.alert('Impossibile installare app :(')
     }
   }
