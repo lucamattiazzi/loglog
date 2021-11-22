@@ -1,4 +1,4 @@
-import { Data } from '../types'
+import { BabyEvent, Data, FoodEvent, SleepEvent } from '../types'
 import dayjs from 'dayjs'
 
 export async function fetchData(): Promise<Data> {
@@ -18,4 +18,24 @@ export function getDayRange(delta: number) {
   const start = today.startOf('day')
   const end = today.endOf('day')
   return [start.unix() * 1000, end.unix() * 1000]
+}
+
+type EventFilterFn = (event: BabyEvent) => boolean
+
+export function isFoodEvent(event: BabyEvent): event is FoodEvent {
+  return event.type === 'food'
+}
+
+export function isSleepEvent(event: BabyEvent): event is SleepEvent {
+  return event.type === 'sleep'
+}
+
+export function getIntervalEventsFilter(from: number, to: number): EventFilterFn {
+  return (event: BabyEvent) => {
+    if (isFoodEvent(event)) {
+      return event.ts >= from && event.ts < to
+    } else {
+      return event.start <= to && event.end > from
+    }
+  }
 }

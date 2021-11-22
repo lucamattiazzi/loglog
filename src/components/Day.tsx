@@ -3,9 +3,10 @@ import React from 'react'
 import dayjs from 'dayjs'
 
 import { DayBar } from './DayBar'
-import { DayEvent } from './DayEvent'
+import { FoodEventComponent, SleepEventComponent } from './DayEvent'
 import { state } from '../state'
 import { Bar } from '../types'
+import { getIntervalEventsFilter, isFoodEvent, isSleepEvent } from '../lib/lib'
 
 interface DayProps {
   start: number
@@ -24,18 +25,17 @@ export function getBars(ts: number): Bar[] {
 
 function _Day(p: DayProps) {
   const bars = getBars(p.start)
-  const events = state.events.filter(e => 
-    e.type === 'food' ? e.ts > p.start && e.ts < p.end : e.start > p.start && e.end < p.end
-  ) || []
+  const filterer = getIntervalEventsFilter(p.start, p.end)
+  const events = state.events.filter(filterer) || []
 
-  const foodEvents = events.filter(e => e.type === 'food')
-  const sleepEvents = events.filter(e => e.type === 'sleep')
+  const foodEvents = events.filter(isFoodEvent)
+  const sleepEvents = events.filter(isSleepEvent)
 
   return (
-    <div style={p.style} className="overflow-y-auto no-scrollbars relative shadow-6 pv2">
+    <div style={p.style} className="overflow-y-auto no-scrollbars relative shadow-6">
       { bars.map((b, idx) => <DayBar bar={b} key={idx} backgroundColor={p.style.backgroundColor as string} />) }
-      { sleepEvents.map((e, idx) => <DayEvent event={e} key={idx} />) }
-      { foodEvents.map((e, idx) => <DayEvent event={e} key={idx} />) }
+      { sleepEvents.map((e, idx) => <SleepEventComponent start={p.start} end={p.end} event={e} key={idx} />) }
+      { foodEvents.map((e, idx) => <FoodEventComponent start={p.start} end={p.end} event={e} key={idx} />) }
     </div>
   )
 }
