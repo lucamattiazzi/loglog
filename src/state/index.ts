@@ -101,7 +101,6 @@ class State {
   }
 
   public updateCurrentEvent = (eventUpdate: Partial<BabyEvent>) => {
-    console.log('eventUpdate', eventUpdate)
     merge(this.currentEvent, eventUpdate)
     saveData(this.data)
   }
@@ -115,13 +114,25 @@ class State {
     try {
       this.installPromptEvent.prompt()
     } catch (err) {
-      console.log('err', err)
+      console.error('err', err)
       window.alert('Impossibile installare app :(')
     }
   }
 
   public goToView(view: View) {
     this.setView(view)
+  }
+
+  public getDayEvents(day: string) {
+    const hour = dayjs().format('HH:mm')
+    const dateTime = [day, hour].join('T')
+    const selectedDay = dayjs(dateTime)
+    const start = selectedDay.startOf('day').unix() * 1000
+    const end = selectedDay.endOf('day').unix() * 1000
+    const events = this.events.filter(e => 
+      e.type === 'food' ? e.ts > start && e.ts < end : e.start > start && e.end < end
+    ) || []
+    return events
   }
 
   // private
