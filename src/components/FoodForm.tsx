@@ -7,7 +7,7 @@ import { FoodEvent } from '../types'
 function _FoodForm() {
   const currentEvent = state.currentEvent as FoodEvent
   const ts = currentEvent.ts || currentEvent['start'] || dayjs().unix() * 1000
-  const amount = currentEvent.amount || 100
+  const amount = currentEvent.amount ?? 100
 
   function onTimeChange(e: React.ChangeEvent<HTMLInputElement>) {
     const ts = dayjs(e.target.value).unix() * 1000
