@@ -5,6 +5,7 @@ import { CalendarView } from './CalendarView'
 import { EventModal } from './EventModal'
 import { TableView } from './TableView'
 import { InfoView } from './InfoView'
+import { LoginView } from './LoginView'
 import { state } from '../state'
 import { View } from '../types'
 
@@ -16,6 +17,7 @@ const VIEW_COMPONENTS: Record<View, MobxComponent> = {
   calendar: CalendarView,
   table: TableView,
   info: InfoView,
+  login: LoginView
 }
 
 function _App() {

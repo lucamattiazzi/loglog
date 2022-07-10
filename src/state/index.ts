@@ -33,6 +33,7 @@ class State {
   tableView: boolean = false
   showPwaPrompt: boolean = false
   currentView: View = getFirstView()
+  logged: boolean = false
 
   constructor() {
     makeAutoObservable(this)
@@ -50,7 +51,7 @@ class State {
     const today = dayjs()
     const start = today.startOf('day').unix() * 1000
     const end = today.endOf('day').unix() * 1000
-    const events = this.events.filter(e => 
+    const events = this.events.filter(e =>
       e.type === 'food' ? e.ts > start && e.ts < end : e.start > start && e.end < end
     ) || []
     return events
@@ -104,7 +105,7 @@ class State {
     merge(this.currentEvent, eventUpdate)
     saveData(this.data)
   }
-  
+
   public isEventNew = async (event: BabyEvent): Promise<boolean> => {
     const savedData = await fetchData()
     return savedData.events.some(e => e.id === event.id)
@@ -129,7 +130,7 @@ class State {
     const selectedDay = dayjs(dateTime)
     const start = selectedDay.startOf('day').unix() * 1000
     const end = selectedDay.endOf('day').unix() * 1000
-    const events = this.events.filter(e => 
+    const events = this.events.filter(e =>
       e.type === 'food' ? e.ts > start && e.ts < end : e.start > start && e.end < end
     ) || []
     return events
@@ -148,7 +149,7 @@ class State {
     if (this.data.events.some(e => e.id === event.id)) return
     this.data.events.push(event)
   }
-  
+
   private setData(data: Data) {
     this.data = data
   }

@@ -7,7 +7,7 @@ function _Header() {
     <div className="flex flex-row justify-around items-center w-100 pv2 ph2 f2 bg-orange">
       <div onClick={() => state.goToView('calendar')}>📅</div>
       <div onClick={() => state.goToView('table')}>📋</div>
-      <div>🔑</div>
+      <div onClick={() => state.goToView('login')}>🔑</div>
       <div>🔒</div>
       <div onClick={() => state.goToView('info')}>ℹ️</div>
     </div>
